@@ -1,6 +1,5 @@
 let usersWrapper = document.querySelector(".users-wrapper");
 let postsWrapper = document.querySelector(".posts-wrapper");
-let userBtn = document.querySelector(".user-btn");
 
 async function getUsers() {
   try {
@@ -41,21 +40,22 @@ usersWrapper.addEventListener("click", (e) => {
 
 async function getPosts(id) {
   try {
-    const posts = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const posts = await fetch(
+      `https://jsonplaceholder.typicode.com/posts?userId=${id}`
+    );
 
     if (!posts.ok) {
       throw new Error(`HTTP error! status: ${posts.status}`);
     }
 
     const postsData = await posts.json();
-    const filteredPosts = postsData.filter((p) => p.userId == id);
-    console.log(filteredPosts);
-    console.log(filteredPosts.length);
+    console.log(postsData);
+    console.log(postsData.length);
 
     postsWrapper.innerHTML =
-      filteredPosts.length == 0
+      postsData.length === 0
         ? `<p>There are no posts yet</p>`
-        : filteredPosts
+        : postsData
             .map(
               (post) => `
                 <div class="p-3 mb-3 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition">
